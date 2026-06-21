@@ -135,3 +135,30 @@ formNovoSocio.addEventListener("submit", async (e) => {
 });
 
 carregarSociosDoBanco();
+
+const inputCpf = document.getElementById("cpf");
+const inputRg = document.getElementById("rg");
+
+inputCpf.addEventListener("input", (e) => {
+    let value = e.target.value;
+    
+    value = value.replace(/\D/g, "").slice(0, 11);
+    
+    value = value.replace(/(\d{3})(\d)/, "$1.$2"); 
+    value = value.replace(/(\d{3})(\d)/, "$1.$2"); 
+    value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2"); 
+    
+    e.target.value = value;
+});
+
+inputRg.addEventListener("input", (e) => {
+    let value = e.target.value;
+    
+    value = value.replace(/\D/g, "");
+    
+    if (value.length > 1) {
+        value = value.replace(/(\d+)(\d{1})$/, "$1-$2");
+    }
+    
+    e.target.value = value;
+});
