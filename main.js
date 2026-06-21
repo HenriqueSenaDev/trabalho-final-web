@@ -1,39 +1,54 @@
-let socios = [
-    { nome: "José Silva", telefone: "(00) 00000-0000", situacao: "pago" },
-    { nome: "Maria Souza", telefone: "(00) 00000-0000", situacao: "pendente" },
-    { nome: "João Santos", telefone: "(00) 00000-0000", situacao: "pago" },
-    { nome: "Pedro Lucas", telefone: "(00) 00000-0000", situacao: "pago" },
-    { nome: "Paulo Henrique", telefone: "(00) 00000-0000", situacao: "pendente" },
-    { nome: "Francisca Joana", telefone: "(00) 00000-0000", situacao: "pago" },
-    { nome: "Ana Luiza", telefone: "(00) 00000-0000", situacao: "pago" },
-    { nome: "Maria Eduarda", telefone: "(00) 00000-0000", situacao: "pendente" },
-    { nome: "Gabriela", telefone: "(00) 00000-0000", situacao: "pago" }
-];
+import { CONFIG } from './config.js';
+
+const SUPABASE_URL = CONFIG.SUPABASE_URL;
+const SUPABASE_KEY = CONFIG.SUPABASE_KEY;
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let socios = [];
 
 const tabelaSocios = document.getElementById("tabelaSocios");
 const totalSociosEl = document.getElementById("totalSocios");
 const inputPesquisa = document.getElementById("inputPesquisa");
 
+async function carregarSociosDoBanco() {
+    try {
+        const { data, error } = await supabase
+            .from('socios')
+            .select('*')
+            .order('nome', { ascending: true });
+
+        if (error) throw error;
+
+        socios = data;
+        
+        renderTabela(socios);
+    } catch (error) {
+        console.error("Erro ao carregar dados do Supabase:", error.message);
+        alert("Erro ao conectar com o banco de dados.");
+    }
+}
+
 function renderTabela(lista) {
     tabelaSocios.innerHTML = "";
 
     lista.forEach((socio) => {
-    const tr = document.createElement("tr");
+        const tr = document.createElement("tr");
 
-    const badgeClasse = socio.situacao === "pago" ? "status-pago" : "status-pendente";
-    const badgeTexto = socio.situacao === "pago" ? "✓ Pago" : "✕ Pendente";
+        const badgeClasse = socio.ativo ? "status-pago" : "status-pendente";
+        const badgeTexto = socio.ativo ? "✓ Pago" : "✕ Pendente";
 
-    tr.innerHTML = `
-        <td class="nome-socio">${socio.nome}</td>
-        <td>${socio.telefone}</td>
-        <td><span class="status-badge ${badgeClasse}">${badgeTexto}</span></td>
-        <td><button class="btn-detalhes">Ver detalhes</button></td>
-    `;
+        tr.innerHTML = `
+            <td class="nome-socio">${socio.nome}</td>
+            <td>${socio.telefone || '(00) 00000-0000'}</td>
+            <td><span class="status-badge ${badgeClasse}">${badgeTexto}</span></td>
+            <td><button class="btn-detalhes" data-id="${socio.id}">Ver detalhes</button></td>
+        `;
 
-    tabelaSocios.appendChild(tr);
+        tabelaSocios.appendChild(tr);
     });
 
-    totalSociosEl.textContent = `Total de Sócios: ${socios.length}`;
+    totalSociosEl.textContent = `Total de Sócios: ${lista.length}`;
 }
 
 function filtrarSocios() {
@@ -64,31 +79,59 @@ btnFecharModal.addEventListener("click", fecharModal);
 btnCancelar.addEventListener("click", fecharModal);
 
 modalOverlay.addEventListener("click", (e) => {
-    if (e.target === modalOverlay) {
-    fecharModal();
-    }
+    if (e.target === modalOverlay) fecharModal();
 });
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
-    fecharModal();
+        fecharModal();
     }
 });
 
-formNovoSocio.addEventListener("submit", (e) => {
+formNovoSocio.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const nome = document.getElementById("nome").value.trim();
-    if (!nome) return;
+    const dataNascimento = document.getElementById("dataNascimento").value;
+    const filiacaoMae = document.getElementById("filiacaoMae").value.trim();
+    const filiacaoPai = document.getElementById("filiacaoPai").value.trim();
+    const naturalidade = document.getElementById("naturalidade").value.trim();
+    const rg = document.getElementById("rg").value.trim();
+    const cpf = document.getElementById("cpf").value.trim();
+    const profissao = document.getElementById("profissao").value.trim();
+    const endereco = document.getElementById("endereco").value.trim();
+    const telefone = document.getElementById("telefone") ? document.getElementById("telefone").value.trim() : "(00) 00000-0000";
 
-    socios.push({
-    nome: nome,
-    telefone: "(00) 00000-0000",
-    situacao: "pendente"
-    });
+    if (!nome || !cpf) {
+        alert("Por favor, preencha os campos obrigatórios.");
+        return;
+    }
 
-    filtrarSocios();
-    fecharModal();
+    try {
+        const { error } = await supabase
+            .from('socios')
+            .insert([{
+                nome,
+                data_nascimento: dataNascimento,
+                filiacao_mae: filiacaoMae,
+                filiacao_pai: filiacaoPai,
+                naturalidade,
+                rg,
+                cpf,
+                profissao,
+                endereco,
+                telefone,
+                ativo: true
+            }]);
+
+        if (error) throw error;
+
+        await carregarSociosDoBanco();
+        fecharModal();
+    } catch (error) {
+        console.error("Erro ao salvar novo sócio:", error.message);
+        alert("Erro ao cadastrar sócio. Verifique se o CPF já existe.");
+    }
 });
 
-renderTabela(socios);
+carregarSociosDoBanco();
