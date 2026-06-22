@@ -2,6 +2,7 @@ CREATE TABLE administradores (
   id UUID REFERENCES auth.users(id) PRIMARY KEY,
   nome_completo VARCHAR(255) NOT NULL,
   nome_usuario VARCHAR(100) UNIQUE NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
   criado_em TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
