@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMAB - Criar conta</title>
+
+  <link rel="stylesheet" href="auth.css">
+</head>
+
+<body class="auth-body">
+  <div class="auth-card layout-cadastro">
+    <div class="auth-brand">
+      <img class="auth-logo" src="fotos/logo.png" alt="AMAB - Associação dos Moradores e Amigos do Baú">
+      <img class="auth-icon" src="fotos/icon_cadastro.png" alt="">
+      <h2>Crie sua conta de administrador</h2>
+      <p>Informe seus dados para criar sua conta e ter acesso ao sistema de controle de sócios.</p>
+    </div>
+
+    <div class="auth-form-panel">
+      <form id="formCadastro">
+        <div class="auth-field">
+          <label for="nomeCompleto">Nome completo</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+            </svg>
+            <input type="text" id="nomeCompleto" placeholder="Digite seu nome completo" autocomplete="name" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="nomeUsuario">Nome de usuário</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+            </svg>
+            <input type="text" id="nomeUsuario" placeholder="Crie um nome de usuário" autocomplete="username" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="email">E-mail</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+            </svg>
+            <input type="email" id="email" placeholder="Digite seu e-mail" autocomplete="email" required>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="senha">Crie uma senha</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+            </svg>
+            <input type="password" id="senha" placeholder="Crie sua senha" autocomplete="new-password" minlength="8" required>
+            <button type="button" class="toggle-senha" aria-label="Mostrar senha" data-target="senha">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.8">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <p class="auth-hint">Mínimo de 8 caracteres</p>
+        </div>
+
+        <div class="auth-field">
+          <label for="confirmarSenha">Confirmar senha</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+            </svg>
+            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha" autocomplete="new-password" minlength="8" required>
+            <button type="button" class="toggle-senha" aria-label="Mostrar senha" data-target="confirmarSenha">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.8">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="auth-message" id="cadastroMessage"></p>
+
+        <button type="submit" class="btn-principal">Criar conta</button>
+
+        <button type="button" class="btn-secundario" id="btnFazerLogin">Já tem conta? Fazer login</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="auth.js"></script>
+</body>
+
+</html>
