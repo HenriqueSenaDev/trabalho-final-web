@@ -156,11 +156,11 @@ if (formCadastro) {
 registrarSessaoCallback((resultadoSessao) => {
   if (!resultadoSessao) return;
 
-  const authPathnames = ["/login.html", "/cadastro.html"];
+  const authPathnames = ["/login", "/cadastro"];
   const pathname = window.location.pathname;
 
   if (!authPathnames.some(authPathname => authPathname.startsWith(pathname))) return;
 
   // User is logged and will be redirected
-  return window.location.href = `${window.location.origin}/index.html`;
+  return window.location.href = `${window.location.origin}/index`;
 });

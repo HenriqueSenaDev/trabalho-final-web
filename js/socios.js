@@ -345,11 +345,12 @@ inputTelefone.addEventListener("input", (e) => {
 });
 
 registrarSessaoCallback((resultadoSessao) => {
-  if (!window.location.pathname.startsWith("/index.html")) return;
+  const pathname = window.location.pathname;
+  if (window.location.pathname !== "/") return;
 
   if (!resultadoSessao) {
     // Protected path, user will be redirected
-    return window.location.href = `${window.location.origin}/login.html`;
+    return window.location.href = `${window.location.origin}/login`;
   }
 
   ocultarLoadingOverlay();

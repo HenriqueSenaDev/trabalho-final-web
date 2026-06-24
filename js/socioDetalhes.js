@@ -462,11 +462,12 @@ async function iniciarTela() {
 }
 
 registrarSessaoCallback((resultadoSessao) => {
-  if (!window.location.pathname.startsWith("/socio-detalhes.html")) return;
+  const pathname = window.location.pathname;
+  if (window.location.pathname !== "/socio-detalhes") return;
 
   if (!resultadoSessao) {
     // Protected path, user will be redirected
-    return window.location.href = `${window.location.origin}/login.html`;
+    return window.location.href = `${window.location.origin}/login`;
   }
 
   ocultarLoadingOverlay();
