@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient.js";
+import { registrarSessaoCallback } from "./session.js";
 
 let paginaAtual = 1;
 const itensPorPagina = 8;
@@ -25,8 +26,14 @@ const btnSairMenu = document.getElementById("btnSairMenu");
 const btnEditarPerfil = document.getElementById("btnEditarPerfil");
 const nomeAdministradorHeader = document.getElementById("nomeAdministradorHeader");
 const nomeAdministradorMenu = document.getElementById("nomeAdministradorMenu");
+const loadingOverlay = document.getElementById("loadingOverlay");
 
-document.getElementById("dataNascimento").addEventListener('focus', function() {
+function ocultarLoadingOverlay() {
+  loadingOverlay?.classList.add("hidden");
+  loadingOverlay?.setAttribute("aria-hidden", "true");
+}
+
+document.getElementById("dataNascimento").addEventListener('focus', function () {
   this.max = hoje.toISOString().split('T')[0];
 });
 
@@ -137,7 +144,7 @@ function renderTabela(lista) {
   tabelaSocios.innerHTML = "";
 
   const totalPaginas = Math.ceil(lista.length / itensPorPagina) || 1;
-  
+
   if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
 
   const inicio = (paginaAtual - 1) * itensPorPagina;
@@ -160,7 +167,7 @@ function renderTabela(lista) {
 
   totalSociosEl.textContent = `Total de Sócios: ${lista.length}`;
   pageInfo.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
-  
+
   btnPrevPage.disabled = paginaAtual === 1;
   btnNextPage.disabled = paginaAtual === totalPaginas || totalPaginas === 0;
 }
@@ -168,7 +175,7 @@ function renderTabela(lista) {
 btnPrevPage.addEventListener("click", () => {
   if (paginaAtual > 1) {
     paginaAtual--;
-    filtrarSocios(); 
+    filtrarSocios();
   }
 });
 
@@ -178,7 +185,7 @@ btnNextPage.addEventListener("click", () => {
 });
 
 inputPesquisa.addEventListener("input", () => {
-  paginaAtual = 1; 
+  paginaAtual = 1;
   filtrarSocios();
 });
 
@@ -274,7 +281,7 @@ formNovoSocio.addEventListener("submit", async (e) => {
   const dataAtualISO = hoje.toISOString().split('T')[0];
   if (dataNascimento > dataAtualISO) {
     alert("A data de nascimento não pode ser no futuro.");
-    document.getElementById("dataNascimento").focus(); 
+    document.getElementById("dataNascimento").focus();
     return;
   }
 
@@ -307,8 +314,6 @@ formNovoSocio.addEventListener("submit", async (e) => {
   }
 });
 
-carregarSociosDoBanco();
-
 const inputCpf = document.getElementById("cpf");
 const inputRg = document.getElementById("rg");
 const inputTelefone = document.getElementById("telefone");
@@ -323,7 +328,7 @@ inputCpf.addEventListener("input", (e) => {
 
 inputRg.addEventListener("input", (e) => {
   let value = e.target.value.replace(/\D/g, "").slice(0, 10);
-  
+
   if (value.length > 1) {
     value = value.replace(/(\d+)(\d{1})$/, "$1-$2");
   }
@@ -332,9 +337,21 @@ inputRg.addEventListener("input", (e) => {
 
 inputTelefone.addEventListener("input", (e) => {
   let value = e.target.value.replace(/\D/g, "").slice(0, 11);
-  
+
   value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
   value = value.replace(/(\d)(\d{4})$/, "$1-$2");
-  
+
   e.target.value = value;
+});
+
+registrarSessaoCallback((resultadoSessao) => {
+  if (!window.location.pathname.startsWith("/index.html")) return;
+
+  if (!resultadoSessao) {
+    // Protected path, user will be redirected
+    return window.location.href = `${window.location.origin}/login.html`;
+  }
+
+  ocultarLoadingOverlay();
+  carregarSociosDoBanco();
 });
