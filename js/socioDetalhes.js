@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient.js";
+import { registrarSessaoCallback } from "./session.js";
 
 const meses = [
   { numero: 1, curto: "Jan", nome: "Janeiro" },
@@ -49,6 +50,12 @@ const btnEditarSocio = document.getElementById("btnEditarSocio");
 const btnEditarCadastro = document.getElementById("btnEditarCadastro");
 const btnExcluirSocio = document.getElementById("btnExcluirSocio");
 const menuEditarSocio = document.getElementById("menuEditarSocio");
+const loadingOverlay = document.getElementById("loadingOverlay");
+
+function ocultarLoadingOverlay() {
+  loadingOverlay?.classList.add("hidden");
+  loadingOverlay?.setAttribute("aria-hidden", "true");
+}
 
 function formatarData(data) {
   if (!data) return "-";
@@ -454,4 +461,14 @@ async function iniciarTela() {
   }
 }
 
-iniciarTela();
+registrarSessaoCallback((resultadoSessao) => {
+  if (!window.location.pathname.startsWith("/socio-detalhes.html")) return;
+
+  if (!resultadoSessao) {
+    // Protected path, user will be redirected
+    return window.location.href = `${window.location.origin}/login.html`;
+  }
+
+  ocultarLoadingOverlay();
+  iniciarTela();
+});
