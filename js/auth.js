@@ -1,6 +1,4 @@
-import { CONFIG } from './config.js';
-
-const supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_KEY);
+import { supabase } from "./supabaseClient.js";
 
 document.querySelectorAll(".toggle-senha").forEach((botao) => {
   botao.addEventListener("click", () => {
@@ -14,6 +12,16 @@ function mostrarMensagem(elemento, texto, tipo) {
   elemento.textContent = texto;
   elemento.classList.remove("erro", "sucesso");
   elemento.classList.add(tipo);
+}
+
+function mensagemErroCadastro(error) {
+  const mensagem = error?.message || "";
+
+  if (mensagem.toLowerCase().includes("user already registered")) {
+    return "Este e-mail já está cadastrado. Faça login ou remova o usuário em Authentication > Users no Supabase.";
+  }
+
+  return `Erro ao criar conta: ${mensagem}`;
 }
 
 const btnCriarConta = document.getElementById("btnCriarConta");
@@ -102,14 +110,19 @@ if (formCadastro) {
     botaoSubmit.disabled = true;
 
     try {
-      const { data: usernameExistente } = await supabase
+      const { data: usuarioExistente } = await supabase
         .from("usuarios")
-        .select("id")
-        .eq("username", username)
+        .select("username, email")
+        .or(`username.eq.${username},email.eq.${email}`)
         .maybeSingle();
 
-      if (usernameExistente) {
+      if (usuarioExistente?.username === username) {
         mostrarMensagem(mensagemEl, "Esse nome de usuário já está em uso.", "erro");
+        return;
+      }
+
+      if (usuarioExistente?.email === email) {
+        mostrarMensagem(mensagemEl, "Este e-mail já está cadastrado. Faça login.", "erro");
         return;
       }
 
@@ -122,16 +135,14 @@ if (formCadastro) {
       });
 
       if (error) {
-        mostrarMensagem(mensagemEl, "Erro ao criar conta: " + error.message, "erro");
+        mostrarMensagem(mensagemEl, mensagemErroCadastro(error), "erro");
         return;
       }
 
-      if (!data.session) {
-        mostrarMensagem(mensagemEl, "Conta criada! Verifique seu e-mail para confirmar antes de entrar.", "sucesso");
-        return;
-      }
-
-      window.location.href = "index.html";
+      mostrarMensagem(mensagemEl, "Conta criada com sucesso! Faça login para continuar.", "sucesso");
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 900);
     } catch (err) {
       console.error("Erro ao criar conta:", err.message);
       mostrarMensagem(mensagemEl, "Erro ao conectar com o servidor.", "erro");

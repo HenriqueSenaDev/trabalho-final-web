@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AMAB - Controle de Sócios</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
@@ -22,13 +23,12 @@
         <p>Controle de Sócios</p>
       </div>
     </div>
-    <div class="header-right">
+    <button class="header-right" id="btnEditarPerfil" type="button" aria-label="Editar perfil do administrador">
       <div class="user-icon">
         <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.6 0-10.5 1.8-10.5 5.4v1.9h21v-1.9c0-3.6-6.9-5.4-10.5-5.4z"/></svg>
       </div>
-      <span>Administrador</span>
-      <span class="chevron">▾</span>
-    </div>
+      <span id="nomeAdministradorHeader">Administrador</span>
+    </button>
   </header>
 
   <main class="container">
@@ -127,9 +127,58 @@
     </div>
   </div>
 
+  <div class="modal-overlay" id="modalPerfilOverlay">
+    <div class="modal-box modal-perfil">
+      <div class="modal-header">
+        <h2>Editar meu perfil</h2>
+        <button class="modal-close" id="btnFecharPerfil" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formPerfil">
+        <div class="form-field full-row">
+          <label for="perfilNome">Nome completo</label>
+          <input type="text" id="perfilNome" placeholder="Administrador" minlength="3" maxlength="50" autocomplete="name" required>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilEmail">E-mail</label>
+          <input type="email" id="perfilEmail" placeholder="admin@sitio.com" maxlength="100" autocomplete="email" readonly aria-readonly="true">
+          <small class="field-hint">O e-mail de acesso não pode ser alterado por aqui.</small>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilNovaSenha">Nova senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilNovaSenha" placeholder="Digite a nova senha" minlength="8" maxlength="72" autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilNovaSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilConfirmarSenha">Confirmar senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilConfirmarSenha" placeholder="Confirme sua senha" minlength="8" maxlength="72" autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilConfirmarSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="form-message" id="perfilMessage"></p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelarPerfil">Cancelar</button>
+          <button type="submit" class="btn-salvar">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script type="module" src="main.js"></script>
+  <script type="module" src="js/socios.js"></script>
 </body>
 
 </html>
