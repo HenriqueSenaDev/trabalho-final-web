@@ -51,6 +51,64 @@ const btnEditarCadastro = document.getElementById("btnEditarCadastro");
 const btnExcluirSocio = document.getElementById("btnExcluirSocio");
 const menuEditarSocio = document.getElementById("menuEditarSocio");
 const loadingOverlay = document.getElementById("loadingOverlay");
+const menuIcon = document.querySelector(".menu-icon");
+const sidebar = document.getElementById("sidebar");
+const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+const btnSairMenu = document.getElementById("btnSairMenu");
+const nomeAdministradorMenu = document.getElementById("nomeAdministradorMenu");
+
+function abrirMenuLateral() {
+  document.body.classList.add("menu-lateral-aberto");
+  menuIcon?.setAttribute("aria-expanded", "true");
+}
+
+function fecharMenuLateral() {
+  document.body.classList.remove("menu-lateral-aberto");
+  menuIcon?.setAttribute("aria-expanded", "false");
+}
+
+function alternarMenuLateral() {
+  if (document.body.classList.contains("menu-lateral-aberto")) {
+    fecharMenuLateral();
+    return;
+  }
+
+  abrirMenuLateral();
+}
+
+menuIcon?.setAttribute("aria-controls", "sidebar");
+menuIcon?.setAttribute("aria-expanded", "false");
+menuIcon?.addEventListener("click", alternarMenuLateral);
+sidebarBackdrop?.addEventListener("click", fecharMenuLateral);
+
+sidebar?.addEventListener("click", (event) => {
+  const acao = event.target.closest("a,button");
+  if (!acao) return;
+
+  if (acao.id !== "btnSairMenu") {
+    fecharMenuLateral();
+  }
+});
+
+btnSairMenu?.addEventListener("click", async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    console.error("Erro ao encerrar sessão:", error.message);
+  } finally {
+    window.location.href = "login.html";
+  }
+});
+
+if (nomeAdministradorMenu) {
+  supabase.auth.getUser().then(({ data }) => {
+    const nome = data?.user?.user_metadata?.nome_completo;
+    if (nome) {
+      nomeAdministradorMenu.textContent = nome;
+    }
+  });
+}
 
 function ocultarLoadingOverlay() {
   loadingOverlay?.classList.add("hidden");
@@ -392,6 +450,12 @@ document.addEventListener("click", (e) => {
 
   menuEditarSocio.classList.remove("aberto");
   btnEditarSocio.setAttribute("aria-expanded", "false");
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && document.body.classList.contains("menu-lateral-aberto")) {
+    fecharMenuLateral();
+  }
 });
 
 btnEditarCadastro.addEventListener("click", () => {
