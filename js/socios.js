@@ -19,6 +19,10 @@ const btnEditarPerfil = document.getElementById("btnEditarPerfil");
 const nomeAdministradorHeader = document.getElementById("nomeAdministradorHeader");
 const nomeAdministradorMenu = document.getElementById("nomeAdministradorMenu");
 
+document.getElementById("dataNascimento").addEventListener('focus', function() {
+  this.max = hoje.toISOString().split('T')[0];
+});
+
 function abrirMenuLateral() {
   document.body.classList.add("menu-lateral-aberto");
   menuIcon?.setAttribute("aria-expanded", "true");
@@ -224,12 +228,17 @@ formNovoSocio.addEventListener("submit", async (e) => {
   const cpf = document.getElementById("cpf").value.trim();
   const profissao = document.getElementById("profissao").value.trim();
   const endereco = document.getElementById("endereco").value.trim();
-  const telefone = document.getElementById("telefone")
-    ? document.getElementById("telefone").value.trim()
-    : "(00) 00000-0000";
+  const telefone = document.getElementById("telefone").value.trim();
 
-  if (!nome || !cpf) {
+  if (!nome || !cpf || !telefone) {
     alert("Por favor, preencha os campos obrigatórios.");
+    return;
+  }
+
+  const dataAtualISO = hoje.toISOString().split('T')[0];
+  if (dataNascimento > dataAtualISO) {
+    alert("A data de nascimento não pode ser no futuro.");
+    document.getElementById("dataNascimento").focus(); 
     return;
   }
 
@@ -266,27 +275,30 @@ carregarSociosDoBanco();
 
 const inputCpf = document.getElementById("cpf");
 const inputRg = document.getElementById("rg");
+const inputTelefone = document.getElementById("telefone");
 
 inputCpf.addEventListener("input", (e) => {
-  let value = e.target.value;
-
-  value = value.replace(/\D/g, "").slice(0, 11);
-
+  let value = e.target.value.replace(/\D/g, "").slice(0, 11);
   value = value.replace(/(\d{3})(\d)/, "$1.$2");
   value = value.replace(/(\d{3})(\d)/, "$1.$2");
   value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-
   e.target.value = value;
 });
 
 inputRg.addEventListener("input", (e) => {
-  let value = e.target.value;
-
-  value = value.replace(/\D/g, "");
-
+  let value = e.target.value.replace(/\D/g, "").slice(0, 10);
+  
   if (value.length > 1) {
     value = value.replace(/(\d+)(\d{1})$/, "$1-$2");
   }
+  e.target.value = value;
+});
 
+inputTelefone.addEventListener("input", (e) => {
+  let value = e.target.value.replace(/\D/g, "").slice(0, 11);
+  
+  value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+  value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+  
   e.target.value = value;
 });
