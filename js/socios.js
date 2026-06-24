@@ -10,6 +10,81 @@ const STATUS_PENDENTE = "Pendente";
 const tabelaSocios = document.getElementById("tabelaSocios");
 const totalSociosEl = document.getElementById("totalSocios");
 const inputPesquisa = document.getElementById("inputPesquisa");
+const menuIcon = document.querySelector(".menu-icon");
+const sidebar = document.getElementById("sidebar");
+const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+const btnMeuPerfilMenu = document.getElementById("btnMeuPerfilMenu");
+const btnSairMenu = document.getElementById("btnSairMenu");
+const btnEditarPerfil = document.getElementById("btnEditarPerfil");
+const nomeAdministradorHeader = document.getElementById("nomeAdministradorHeader");
+const nomeAdministradorMenu = document.getElementById("nomeAdministradorMenu");
+
+function abrirMenuLateral() {
+  document.body.classList.add("menu-lateral-aberto");
+  menuIcon?.setAttribute("aria-expanded", "true");
+}
+
+function fecharMenuLateral() {
+  document.body.classList.remove("menu-lateral-aberto");
+  menuIcon?.setAttribute("aria-expanded", "false");
+}
+
+function alternarMenuLateral() {
+  const menuAberto = document.body.classList.contains("menu-lateral-aberto");
+  if (menuAberto) {
+    fecharMenuLateral();
+    return;
+  }
+
+  abrirMenuLateral();
+}
+
+function sincronizarNomeAdministradorNoMenu() {
+  if (!nomeAdministradorHeader || !nomeAdministradorMenu) return;
+  nomeAdministradorMenu.textContent =
+    nomeAdministradorHeader.textContent?.trim() || "Administrador";
+}
+
+menuIcon?.setAttribute("aria-controls", "sidebar");
+menuIcon?.setAttribute("aria-expanded", "false");
+menuIcon?.addEventListener("click", alternarMenuLateral);
+sidebarBackdrop?.addEventListener("click", fecharMenuLateral);
+
+sidebar?.addEventListener("click", (event) => {
+  const acao = event.target.closest("a,button");
+  if (!acao) return;
+
+  if (acao.id !== "btnSairMenu") {
+    fecharMenuLateral();
+  }
+});
+
+btnMeuPerfilMenu?.addEventListener("click", () => {
+  btnEditarPerfil?.click();
+});
+
+btnSairMenu?.addEventListener("click", async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    console.error("Erro ao encerrar sessão:", error.message);
+  } finally {
+    window.location.href = "login.html";
+  }
+});
+
+if (nomeAdministradorHeader && nomeAdministradorMenu) {
+  sincronizarNomeAdministradorNoMenu();
+  const observadorNome = new MutationObserver(
+    sincronizarNomeAdministradorNoMenu,
+  );
+  observadorNome.observe(nomeAdministradorHeader, {
+    childList: true,
+    characterData: true,
+    subtree: true,
+  });
+}
 
 async function carregarSociosDoBanco() {
   try {
@@ -130,6 +205,10 @@ modalOverlay.addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
     fecharModal();
+  }
+
+  if (e.key === "Escape" && document.body.classList.contains("menu-lateral-aberto")) {
+    fecharMenuLateral();
   }
 });
 
