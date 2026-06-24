@@ -15,6 +15,12 @@ create policy "Leitura publica de username/email"
   on public.usuarios for select
   using (true);
 
+drop policy if exists "Usuario atualiza seu proprio perfil" on public.usuarios;
+create policy "Usuario atualiza seu proprio perfil"
+  on public.usuarios for update
+  using (auth.uid() = id)
+  with check (auth.uid() = id);
+
 -- A linha em "usuarios" é criada automaticamente por este trigger sempre que
 -- um usuário novo é registrado em auth.users (mesmo sem confirmação de e-mail
 -- e sem sessão ativa ainda). Por isso não existe policy de INSERT: a tabela
