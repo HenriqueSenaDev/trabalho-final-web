@@ -1,3 +1,4 @@
+import { registrarSessaoCallback } from "./session.js";
 import { supabase } from "./supabaseClient.js";
 
 document.querySelectorAll(".toggle-senha").forEach((botao) => {
@@ -151,3 +152,15 @@ if (formCadastro) {
     }
   });
 }
+
+registrarSessaoCallback((resultadoSessao) => {
+  if (!resultadoSessao) return;
+
+  const authPathnames = ["/login.html", "/cadastro.html"];
+  const pathname = window.location.pathname;
+
+  if (!authPathnames.some(authPathname => authPathname.startsWith(pathname))) return;
+
+  // User is logged and will be redirected
+  return window.location.href = `${window.location.origin}/index.html`;
+});
