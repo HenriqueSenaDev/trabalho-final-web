@@ -39,6 +39,32 @@ function senhaPerfilValida(senha) {
   return senha.length >= 8 && senha.length <= 72 && !/\s/.test(senha);
 }
 
+function mensagemErroPerfil(error) {
+  const mensagem = (error?.message || "").toLowerCase();
+
+  if (
+    mensagem.includes("different from the old password") ||
+    mensagem.includes("same password") ||
+    mensagem.includes("new password should be different")
+  ) {
+    return "A nova senha deve ser diferente da senha atual.";
+  }
+
+  if (mensagem.includes("password")) {
+    return "Não foi possível alterar a senha. Use uma senha diferente, com no mínimo 8 caracteres.";
+  }
+
+  if (
+    mensagem.includes("jwt") ||
+    mensagem.includes("session") ||
+    mensagem.includes("reauthentication")
+  ) {
+    return "Sua sessão expirou. Faça login novamente para atualizar o perfil.";
+  }
+
+  return "Não foi possível atualizar o perfil. Verifique as permissões no Supabase.";
+}
+
 function preencherFormularioPerfil() {
   const nome =
     perfilLogado?.nome_completo ||
@@ -193,10 +219,7 @@ formPerfil.addEventListener("submit", async (e) => {
     perfilConfirmarSenha.value = "";
   } catch (error) {
     console.error("Erro ao atualizar perfil:", error.message);
-    mostrarMensagemPerfil(
-      "Não foi possível atualizar o perfil. Verifique as permissões no Supabase.",
-      "erro",
-    );
+    mostrarMensagemPerfil(mensagemErroPerfil(error), "erro");
   } finally {
     submitButton.disabled = false;
   }
