@@ -1,5 +1,12 @@
 import { supabase } from "./supabaseClient.js";
 
+let paginaAtual = 1;
+const itensPorPagina = 8;
+
+const btnPrevPage = document.getElementById("btnPrevPage");
+const btnNextPage = document.getElementById("btnNextPage");
+const pageInfo = document.getElementById("pageInfo");
+
 let socios = [];
 const hoje = new Date();
 const anoAtual = hoje.getFullYear();
@@ -129,22 +136,51 @@ async function carregarSociosDoBanco() {
 function renderTabela(lista) {
   tabelaSocios.innerHTML = "";
 
-  lista.forEach((socio) => {
+  const totalPaginas = Math.ceil(lista.length / itensPorPagina) || 1;
+  
+  if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+  const inicio = (paginaAtual - 1) * itensPorPagina;
+  const fim = inicio + itensPorPagina;
+  const listaPaginada = lista.slice(inicio, fim);
+
+  listaPaginada.forEach((socio) => {
     const tr = document.createElement("tr");
     const badgeStatus = montarBadgeStatus(socio.status_mes_atual);
 
     tr.innerHTML = `
-            <td class="nome-socio">${socio.nome}</td>
-            <td>${socio.telefone || "(00) 00000-0000"}</td>
-            <td><span class="status-badge ${badgeStatus.classe}">${badgeStatus.texto}</span></td>
-            <td><a class="btn-detalhes" href="socio-detalhes.html?id=${socio.id}" data-id="${socio.id}">Ver detalhes</a></td>
-        `;
+      <td class="nome-socio">${socio.nome}</td>
+      <td>${socio.telefone || "(00) 00000-0000"}</td>
+      <td><span class="status-badge ${badgeStatus.classe}">${badgeStatus.texto}</span></td>
+      <td><a class="btn-detalhes" href="socio-detalhes.html?id=${socio.id}" data-id="${socio.id}">Ver detalhes</a></td>
+    `;
 
     tabelaSocios.appendChild(tr);
   });
 
   totalSociosEl.textContent = `Total de Sócios: ${lista.length}`;
+  pageInfo.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+  
+  btnPrevPage.disabled = paginaAtual === 1;
+  btnNextPage.disabled = paginaAtual === totalPaginas || totalPaginas === 0;
 }
+
+btnPrevPage.addEventListener("click", () => {
+  if (paginaAtual > 1) {
+    paginaAtual--;
+    filtrarSocios(); 
+  }
+});
+
+btnNextPage.addEventListener("click", () => {
+  paginaAtual++;
+  filtrarSocios();
+});
+
+inputPesquisa.addEventListener("input", () => {
+  paginaAtual = 1; 
+  filtrarSocios();
+});
 
 function montarBadgeStatus(status) {
   if (status === STATUS_PAGO) {

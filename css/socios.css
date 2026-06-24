@@ -608,3 +608,41 @@
       justify-content: center;
     }
   }
+
+  .pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.btn-page {
+  background-color: var(--branco);
+  border: 1px solid var(--verde-principal);
+  color: var(--verde-principal);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-page:hover:not(:disabled) {
+  background-color: var(--verde-principal);
+  color: var(--branco);
+}
+
+.btn-page:disabled {
+  border-color: var(--cinza-borda);
+  color: var(--cinza-placeholder);
+  cursor: not-allowed;
+  background-color: #f9f9f9;
+}
+
+#pageInfo {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--cinza-texto);
+}
