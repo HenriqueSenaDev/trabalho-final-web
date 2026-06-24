@@ -152,10 +152,6 @@ function normalizarNomePerfil(valor) {
     .slice(0, 50);
 }
 
-function emailValido(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
-}
-
 function senhaPerfilValida(senha) {
   return senha.length >= 8 && senha.length <= 72 && !/\s/.test(senha);
 }
@@ -243,10 +239,6 @@ perfilNome.addEventListener("input", () => {
   perfilNome.value = normalizarNomePerfil(perfilNome.value);
 });
 
-perfilEmail.addEventListener("blur", () => {
-  perfilEmail.value = perfilEmail.value.trim().toLowerCase().slice(0, 100);
-});
-
 formPerfil.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -259,15 +251,15 @@ formPerfil.addEventListener("submit", async (e) => {
   }
 
   const nome = normalizarNomePerfil(perfilNome.value).trim();
-  const email = perfilEmail.value.trim().toLowerCase();
+  const emailAtual = usuarioLogado.email || perfilLogado?.email || "";
   const novaSenha = perfilNovaSenha.value;
   const confirmarSenha = perfilConfirmarSenha.value;
 
   perfilNome.value = nome;
-  perfilEmail.value = email;
+  perfilEmail.value = emailAtual;
 
-  if (!nome || !email) {
-    mostrarMensagemPerfil("Preencha nome e e-mail.", "erro");
+  if (!nome) {
+    mostrarMensagemPerfil("Preencha o nome.", "erro");
     return;
   }
 
@@ -278,11 +270,6 @@ formPerfil.addEventListener("submit", async (e) => {
 
   if (!/^[A-Za-zÀ-ÖØ-öø-ÿ\s]+$/.test(nome)) {
     mostrarMensagemPerfil("O nome deve conter apenas letras e espaços.", "erro");
-    return;
-  }
-
-  if (email.length > 100 || !emailValido(email)) {
-    mostrarMensagemPerfil("Informe um e-mail válido com até 100 caracteres.", "erro");
     return;
   }
 
@@ -305,7 +292,6 @@ formPerfil.addEventListener("submit", async (e) => {
 
   try {
     const authPayload = {
-      email,
       data: { nome_completo: nome },
     };
 
@@ -318,15 +304,14 @@ formPerfil.addEventListener("submit", async (e) => {
 
     const { error: perfilError } = await supabase
       .from("usuarios")
-      .update({ nome_completo: nome, email })
+      .update({ nome_completo: nome })
       .eq("id", usuarioLogado.id);
 
     if (perfilError) throw perfilError;
 
-    perfilLogado = { ...perfilLogado, nome_completo: nome, email };
+    perfilLogado = { ...perfilLogado, nome_completo: nome };
     usuarioLogado = {
       ...usuarioLogado,
-      email,
       user_metadata: { ...usuarioLogado.user_metadata, nome_completo: nome },
     };
     nomeAdministradorHeader.textContent = nome || "Administrador";

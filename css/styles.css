@@ -409,6 +409,21 @@
     padding: 12px 16px;
   }
 
+  .modal-perfil .form-field input[readonly] {
+    background-color: #f7f7f7;
+    color: #777;
+    cursor: not-allowed;
+  }
+
+  .modal-perfil .field-hint {
+    display: block;
+    color: #777;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-top: 8px;
+  }
+
   .password-field {
     position: relative;
   }
