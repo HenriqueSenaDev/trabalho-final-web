@@ -7,6 +7,7 @@
   <title>AMAB - Criar conta</title>
 
   <link rel="stylesheet" href="css/auth.css">
+  <link rel="stylesheet" href="css/shared.css">
 </head>
 
 <body class="auth-body">
@@ -60,7 +61,8 @@
               <rect x="5" y="11" width="14" height="9" rx="2"></rect>
               <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
             </svg>
-            <input type="password" id="senha" placeholder="Crie sua senha" autocomplete="new-password" minlength="8" required>
+            <input type="password" id="senha" placeholder="Crie sua senha" autocomplete="new-password" minlength="8"
+              required>
             <button type="button" class="toggle-senha" aria-label="Mostrar senha" data-target="senha">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.8">
                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
@@ -78,7 +80,8 @@
               <rect x="5" y="11" width="14" height="9" rx="2"></rect>
               <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
             </svg>
-            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha" autocomplete="new-password" minlength="8" required>
+            <input type="password" id="confirmarSenha" placeholder="Confirme sua senha" autocomplete="new-password"
+              minlength="8" required>
             <button type="button" class="toggle-senha" aria-label="Mostrar senha" data-target="confirmarSenha">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.8">
                 <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
@@ -90,7 +93,12 @@
 
         <p class="auth-message" id="cadastroMessage"></p>
 
-        <button type="submit" class="btn-principal">Criar conta</button>
+        <button type="submit" class="btn-principal">
+          <span>Criar conta</span>
+          <div class="loading-spinner"
+            style="border-top-color: white !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none;">
+          </div>
+        </button>
 
         <button type="button" class="btn-secundario" id="btnFazerLogin">Já tem conta? Fazer login</button>
       </form>

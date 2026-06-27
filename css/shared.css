@@ -23,6 +23,25 @@
   animation: loadingSpin 0.8s linear infinite;
 }
 
+button:disabled {
+  cursor: unset;
+}
+
+button:disabled svg,
+button:disabled span {
+  display: none;
+}
+
+button:disabled .loading-spinner {
+  display: block !important;
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes loadingSpin {
   to {
     transform: rotate(360deg);
