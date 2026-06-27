@@ -140,6 +140,9 @@ perfilNome.addEventListener("input", () => {
 formPerfil.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const submitButton = formPerfil.querySelector(".btn-salvar");
+  submitButton.disabled = true;
+
   if (!usuarioLogado) {
     mostrarMensagemPerfil(
       "Entre na sua conta antes de editar o perfil.",
@@ -184,8 +187,6 @@ formPerfil.addEventListener("submit", async (e) => {
     return;
   }
 
-  const submitButton = formPerfil.querySelector(".btn-salvar");
-  submitButton.disabled = true;
   limparMensagemPerfil();
 
   try {
