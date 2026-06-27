@@ -92,6 +92,7 @@ sidebar?.addEventListener("click", (event) => {
 
 btnSairMenu?.addEventListener("click", async () => {
   try {
+    btnSairMenu.disabled = true;
     const { error } = await supabase.auth.signOut();
     if (error) throw error;
   } catch (error) {

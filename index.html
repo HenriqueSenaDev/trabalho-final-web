@@ -42,6 +42,7 @@
     </button>
   </header>
 
+  <!-- Sidebar -->
   <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
 
   <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
@@ -89,6 +90,9 @@
           </svg>
         </span>
         <span>Sair</span>
+        <div class="loading-spinner"
+          style="border-top-color: red !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+        </div>
       </button>
     </div>
   </aside>
@@ -131,6 +135,7 @@
     </div>
   </main>
 
+  <!-- Novo Socio Modal -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
       <div class="modal-header">
@@ -206,6 +211,7 @@
     </div>
   </div>
 
+  <!-- Perfil Modal -->
   <div class="modal-overlay" id="modalPerfilOverlay">
     <div class="modal-box modal-perfil">
       <div class="modal-header">
@@ -258,8 +264,13 @@
         <p class="form-message" id="perfilMessage"></p>
 
         <div class="modal-footer">
-          <button type="button" class="btn-cancelar" id="btnCancelarPerfil">Cancelar</button>
-          <button type="submit" class="btn-salvar">Salvar alterações</button>
+          <button type="button" class="btn-cancelar" id="btnCancelarPerfil">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar alterações</span>
+            <div class="loading-spinner" style="border-top-color: white !important"></div>
+          </button>
         </div>
       </form>
     </div>
