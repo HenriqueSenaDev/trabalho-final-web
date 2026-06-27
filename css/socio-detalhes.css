@@ -12,7 +12,7 @@
   align-items: center;
   gap: 14px;
   color: #2a652d;
-  font-size: 26px;
+  font-size: 18px;
   font-weight: 700;
   text-decoration: none;
   margin-bottom: 24px;
@@ -20,12 +20,12 @@
 }
 
 .link-voltar .voltar-icone {
-  width: 46px;
-  height: 46px;
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 46px;
+  font-size: 32px;
   font-variation-settings: "OPSZ" 48, "wght" 500, "FILL" 0, "GRAD" 0;
   line-height: 1;
   flex: 0 0 auto;
@@ -48,6 +48,7 @@
 
 .avatar-socio {
   width: 84px;
+  margin: 0 auto;
   height: 84px;
   border-radius: 50%;
   background-color: var(--verde-principal);
@@ -63,8 +64,15 @@
   fill: var(--branco);
 }
 
+.socio-cabecalho {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
 .socio-cabecalho h2 {
-  margin: 0 0 12px;
+  margin: 0;
   color: var(--verde-principal);
   font-size: 22px;
   line-height: 1.25;
@@ -74,7 +82,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 7px 0;
+  margin: 0;
   color: #2b2b2b;
   font-size: 16px;
   font-weight: 400;
@@ -103,7 +111,8 @@
 
 .acoes-socio {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center;
   gap: 12px;
   margin-top: 12px;
 }
@@ -206,7 +215,7 @@
   text-align: left;
 }
 
-.menu-editar button + button {
+.menu-editar button+button {
   border-top: 2px solid #dedcdc;
 }
 
@@ -319,7 +328,6 @@
 }
 
 .mes-card {
-  width: 106px;
   min-height: 144px;
   background-color: var(--branco);
   border: 2px solid #dedcdc;
@@ -399,10 +407,6 @@
   margin-top: 30px;
 }
 
-.mes-controle select {
-  width: 160px;
-}
-
 .situacao-controle {
   border: none;
   padding: 0;
@@ -447,7 +451,7 @@
   justify-content: center;
 }
 
-.situacao-controle input:checked + .radio-pago {
+.situacao-controle input:checked+.radio-pago {
   background-color: #2a652d;
   box-shadow: inset 0 0 0 4px var(--branco);
 }
@@ -456,13 +460,19 @@
   color: #d00000;
 }
 
-.situacao-controle input:checked + .radio-pendente {
+.situacao-controle input:checked+.radio-pendente {
   background-color: #d00000;
   box-shadow: inset 0 0 0 4px var(--branco);
 }
 
 #detalhesMessage {
   margin-top: 18px;
+}
+
+@media (min-width: 400px) {
+  .acoes-socio {
+    flex-direction: row;
+  }
 }
 
 @media (max-width: 1320px) {
@@ -495,13 +505,8 @@
   }
 }
 
-@media (max-width: 680px) {
-  .detalhes-container {
-    padding: 0 16px;
-  }
-
+@media (min-width: 680px) {
   .link-voltar {
-    gap: 12px;
     font-size: 20px;
   }
 
@@ -509,6 +514,24 @@
     width: 36px;
     height: 36px;
     font-size: 36px;
+  }
+
+  .socio-cabecalho {
+    align-items: start;
+  }
+
+  .mes-controle select {
+    width: 160px;
+  }
+}
+
+@media (max-width: 680px) {
+  .detalhes-container {
+    padding: 0 16px;
+  }
+
+  .link-voltar {
+    gap: 12px;
   }
 
   .socio-resumo {
