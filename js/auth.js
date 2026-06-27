@@ -56,11 +56,11 @@ if (formLogin) {
       const { data: perfil, error: erroPerfil } = await supabase
         .from("usuarios")
         .select("email")
-        .eq("username", username)
+        .eq("email", username)
         .maybeSingle();
 
       if (erroPerfil || !perfil) {
-        mostrarMensagem(mensagemEl, "Usuário ou senha incorretos.", "erro");
+        mostrarMensagem(mensagemEl, "E-mail ou senha incorretos.", "erro");
         return;
       }
 
@@ -70,7 +70,7 @@ if (formLogin) {
       });
 
       if (erroLogin) {
-        mostrarMensagem(mensagemEl, "Usuário ou senha incorretos.", "erro");
+        mostrarMensagem(mensagemEl, "E-mail ou senha incorretos.", "erro");
         return;
       }
 
