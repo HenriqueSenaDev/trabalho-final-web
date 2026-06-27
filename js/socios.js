@@ -263,6 +263,9 @@ document.addEventListener("keydown", (e) => {
 formNovoSocio.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const submitButton = formNovoSocio.querySelector(".btn-salvar");
+  submitButton.disabled = true;
+
   const nome = document.getElementById("nome").value.trim();
   const dataNascimento = document.getElementById("dataNascimento").value;
   const filiacaoMae = document.getElementById("filiacaoMae").value.trim();
@@ -312,6 +315,8 @@ formNovoSocio.addEventListener("submit", async (e) => {
   } catch (error) {
     console.error("Erro ao salvar novo sócio:", error.message);
     alert("Erro ao cadastrar sócio. Verifique se o CPF já existe.");
+  } finally {
+    submitButton.disabled = false;
   }
 });
 

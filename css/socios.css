@@ -572,6 +572,12 @@
     }
   }
 
+  @media (min-width: 720px) {
+    .modal-footer button {
+      min-width: 140px;
+    }
+  }
+
   @media (max-width: 720px) {
     .form-grid {
       grid-template-columns: 1fr;
