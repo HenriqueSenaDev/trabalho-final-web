@@ -141,6 +141,13 @@
   color: var(--vermelho-texto);
 }
 
+.badge-ativo.inativo .badge-icone {
+  background-color: #f8cdcd;
+  color: #da0000;
+  font-size: 15px;
+  font-weight: 800;
+}
+
 .badge-icone {
   width: 21px;
   height: 21px;
