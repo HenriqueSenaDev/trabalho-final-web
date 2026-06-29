@@ -235,6 +235,122 @@
     </section>
   </main>
 
+  <!-- Editar Sócio Modal -->
+  <div class="modal-overlay" id="modalEditarSocioOverlay">
+    <div class="modal-box modal-socio-edicao">
+      <div class="modal-header">
+        <h2>Editar informações do sócio</h2>
+        <button class="modal-close" id="btnFecharEditarSocio" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formEditarSocio">
+        <div class="form-grid">
+          <div class="form-field full-row">
+            <label for="editarNome">Nome completo<span class="req">*</span></label>
+            <input type="text" id="editarNome" placeholder="Digite o nome completo" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarDataNascimento">Data de nascimento<span class="req">*</span></label>
+            <input type="date" id="editarDataNascimento" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarDataFiliacao">Data de filiação</label>
+            <input type="date" id="editarDataFiliacao">
+          </div>
+
+          <div class="form-field">
+            <label for="editarFiliacaoMae">Filiação - Mãe<span class="req">*</span></label>
+            <input type="text" id="editarFiliacaoMae" placeholder="Nome completo da mãe" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarFiliacaoPai">Filiação - Pai<span class="req">*</span></label>
+            <input type="text" id="editarFiliacaoPai" placeholder="Nome completo do pai" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarNaturalidade">Naturalidade<span class="req">*</span></label>
+            <input type="text" id="editarNaturalidade" placeholder="Cidade - UF" maxlength="80" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarRg">RG<span class="req">*</span></label>
+            <input type="text" id="editarRg" placeholder="Digite o RG" maxlength="11" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarCpf">CPF<span class="req">*</span></label>
+            <input type="text" id="editarCpf" placeholder="000.000.000-00" maxlength="14" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarTelefone">Telefone<span class="req">*</span></label>
+            <input type="text" id="editarTelefone" placeholder="(00) 00000-0000" maxlength="15" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarProfissao">Profissão<span class="req">*</span></label>
+            <input type="text" id="editarProfissao" placeholder="Digite a profissão" maxlength="80" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarAtivo">Situação do cadastro</label>
+            <select id="editarAtivo">
+              <option value="true">Sócio Ativo</option>
+              <option value="false">Sócio Inativo</option>
+            </select>
+          </div>
+
+          <div class="form-field full-row">
+            <label for="editarEndereco">Endereço<span class="req">*</span></label>
+            <input type="text" id="editarEndereco" placeholder="Digite o endereço completo" maxlength="180" required>
+          </div>
+        </div>
+
+        <p class="form-message" id="editarSocioMessage"></p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelarEditarSocio">Cancelar</button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar alterações</span>
+            <div class="loading-spinner"
+              style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Excluir Sócio Modal -->
+  <div class="modal-overlay" id="modalExcluirSocioOverlay">
+    <div class="modal-box modal-confirmacao-exclusao">
+      <div class="modal-header">
+        <h2>Excluir sócio</h2>
+        <button class="modal-close" id="btnFecharExcluirSocio" aria-label="Fechar">&times;</button>
+      </div>
+
+      <p class="confirmacao-texto">
+        Deseja excluir o sócio <strong id="nomeSocioExclusao">selecionado</strong>?
+      </p>
+      <p class="confirmacao-alerta">Essa ação não poderá ser desfeita.</p>
+
+      <p class="form-message" id="excluirSocioMessage"></p>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancelar" id="btnCancelarExcluirSocio">Cancelar</button>
+        <button type="button" class="btn-salvar btn-excluir-confirmar" id="btnConfirmarExcluirSocio">
+          <span>Excluir sócio</span>
+          <div class="loading-spinner"
+            style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.35); display: none; margin: 0 auto;">
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Perfil Modal -->
   <div class="modal-overlay" id="modalPerfilOverlay">
     <div class="modal-box modal-perfil">

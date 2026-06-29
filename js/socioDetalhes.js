@@ -50,6 +50,29 @@ const btnEditarSocio = document.getElementById("btnEditarSocio");
 const btnEditarCadastro = document.getElementById("btnEditarCadastro");
 const btnExcluirSocio = document.getElementById("btnExcluirSocio");
 const menuEditarSocio = document.getElementById("menuEditarSocio");
+const modalEditarSocioOverlay = document.getElementById("modalEditarSocioOverlay");
+const formEditarSocio = document.getElementById("formEditarSocio");
+const btnFecharEditarSocio = document.getElementById("btnFecharEditarSocio");
+const btnCancelarEditarSocio = document.getElementById("btnCancelarEditarSocio");
+const editarSocioMessage = document.getElementById("editarSocioMessage");
+const editarNome = document.getElementById("editarNome");
+const editarDataNascimento = document.getElementById("editarDataNascimento");
+const editarDataFiliacao = document.getElementById("editarDataFiliacao");
+const editarFiliacaoMae = document.getElementById("editarFiliacaoMae");
+const editarFiliacaoPai = document.getElementById("editarFiliacaoPai");
+const editarNaturalidade = document.getElementById("editarNaturalidade");
+const editarRg = document.getElementById("editarRg");
+const editarCpf = document.getElementById("editarCpf");
+const editarTelefone = document.getElementById("editarTelefone");
+const editarProfissao = document.getElementById("editarProfissao");
+const editarAtivo = document.getElementById("editarAtivo");
+const editarEndereco = document.getElementById("editarEndereco");
+const modalExcluirSocioOverlay = document.getElementById("modalExcluirSocioOverlay");
+const btnFecharExcluirSocio = document.getElementById("btnFecharExcluirSocio");
+const btnCancelarExcluirSocio = document.getElementById("btnCancelarExcluirSocio");
+const btnConfirmarExcluirSocio = document.getElementById("btnConfirmarExcluirSocio");
+const nomeSocioExclusao = document.getElementById("nomeSocioExclusao");
+const excluirSocioMessage = document.getElementById("excluirSocioMessage");
 const loadingOverlay = document.getElementById("loadingOverlay");
 const menuIcon = document.querySelector(".menu-icon");
 const sidebar = document.getElementById("sidebar");
@@ -133,6 +156,75 @@ function mostrarMensagem(texto, tipo) {
 function limparMensagem() {
   detalhesMessage.textContent = "";
   detalhesMessage.className = "form-message";
+}
+
+function mostrarMensagemEdicao(texto, tipo) {
+  editarSocioMessage.textContent = texto;
+  editarSocioMessage.className = `form-message ${tipo}`;
+}
+
+function limparMensagemEdicao() {
+  editarSocioMessage.textContent = "";
+  editarSocioMessage.className = "form-message";
+}
+
+function mostrarMensagemExclusao(texto, tipo) {
+  excluirSocioMessage.textContent = texto;
+  excluirSocioMessage.className = `form-message ${tipo}`;
+}
+
+function limparMensagemExclusao() {
+  excluirSocioMessage.textContent = "";
+  excluirSocioMessage.className = "form-message";
+}
+
+function dataHojeISO() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function somenteLetrasEspacos(valor, limite = 100) {
+  return valor
+    .replace(/[0-9]/g, "")
+    .replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .slice(0, limite);
+}
+
+function textoNaturalidade(valor) {
+  return valor
+    .replace(/[0-9]/g, "")
+    .replace(/[^A-Za-zÀ-ÖØ-öø-ÿ\s-]/g, "")
+    .replace(/\s{2,}/g, " ")
+    .slice(0, 80);
+}
+
+function formatarCpf(valor) {
+  let cpf = valor.replace(/\D/g, "").slice(0, 11);
+  cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d)/, "$1.$2");
+  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  return cpf;
+}
+
+function formatarRg(valor) {
+  let rg = valor.replace(/\D/g, "").slice(0, 10);
+
+  if (rg.length > 1) {
+    rg = rg.replace(/(\d+)(\d{1})$/, "$1-$2");
+  }
+
+  return rg;
+}
+
+function formatarTelefone(valor) {
+  let telefone = valor.replace(/\D/g, "").slice(0, 11);
+  telefone = telefone.replace(/^(\d{2})(\d)/g, "($1) $2");
+  telefone = telefone.replace(/(\d)(\d{4})$/, "$1-$2");
+  return telefone;
+}
+
+function quantidadeDigitos(valor) {
+  return valor.replace(/\D/g, "").length;
 }
 
 function validarSocioId() {
@@ -241,6 +333,191 @@ function renderSocio() {
   infoCpf.textContent = socioAtual.cpf || "-";
   infoProfissao.textContent = socioAtual.profissao || "-";
   infoEndereco.textContent = socioAtual.endereco || "-";
+}
+
+function preencherFormularioEditarSocio() {
+  if (!socioAtual) return;
+
+  editarNome.value = socioAtual.nome || "";
+  editarDataNascimento.value = socioAtual.data_nascimento || "";
+  editarDataFiliacao.value = socioAtual.data_filiacao || "";
+  editarFiliacaoMae.value = socioAtual.filiacao_mae || "";
+  editarFiliacaoPai.value = socioAtual.filiacao_pai || "";
+  editarNaturalidade.value = socioAtual.naturalidade || "";
+  editarRg.value = formatarRg(socioAtual.rg || "");
+  editarCpf.value = formatarCpf(socioAtual.cpf || "");
+  editarTelefone.value = formatarTelefone(socioAtual.telefone || "");
+  editarProfissao.value = socioAtual.profissao || "";
+  editarAtivo.value = String(socioAtual.ativo !== false);
+  editarEndereco.value = socioAtual.endereco || "";
+  limparMensagemEdicao();
+}
+
+function abrirModalEditarSocio() {
+  if (!socioAtual) {
+    mostrarMensagem("Carregue o sócio antes de editar.", "erro");
+    return;
+  }
+
+  preencherFormularioEditarSocio();
+  modalEditarSocioOverlay.classList.add("active");
+}
+
+function fecharModalEditarSocio() {
+  modalEditarSocioOverlay.classList.remove("active");
+  formEditarSocio.reset();
+  limparMensagemEdicao();
+}
+
+function obterDadosFormularioSocio() {
+  const dados = {
+    nome: somenteLetrasEspacos(editarNome.value, 100).trim(),
+    dataNascimento: editarDataNascimento.value,
+    dataFiliacao: editarDataFiliacao.value,
+    filiacaoMae: somenteLetrasEspacos(editarFiliacaoMae.value, 100).trim(),
+    filiacaoPai: somenteLetrasEspacos(editarFiliacaoPai.value, 100).trim(),
+    naturalidade: textoNaturalidade(editarNaturalidade.value).trim(),
+    rg: formatarRg(editarRg.value),
+    cpf: formatarCpf(editarCpf.value),
+    telefone: formatarTelefone(editarTelefone.value),
+    profissao: somenteLetrasEspacos(editarProfissao.value, 80).trim(),
+    ativo: editarAtivo.value === "true",
+    endereco: editarEndereco.value.trim().replace(/\s{2,}/g, " ").slice(0, 180),
+  };
+
+  editarNome.value = dados.nome;
+  editarFiliacaoMae.value = dados.filiacaoMae;
+  editarFiliacaoPai.value = dados.filiacaoPai;
+  editarNaturalidade.value = dados.naturalidade;
+  editarRg.value = dados.rg;
+  editarCpf.value = dados.cpf;
+  editarTelefone.value = dados.telefone;
+  editarProfissao.value = dados.profissao;
+  editarEndereco.value = dados.endereco;
+
+  return dados;
+}
+
+function validarFormularioSocio(dados) {
+  const hojeISO = dataHojeISO();
+
+  if (dados.nome.length < 3) {
+    return "O nome deve ter pelo menos 3 caracteres.";
+  }
+
+  if (!dados.dataNascimento) {
+    return "Informe a data de nascimento.";
+  }
+
+  if (dados.dataNascimento > hojeISO) {
+    return "A data de nascimento não pode ser no futuro.";
+  }
+
+  if (dados.dataFiliacao && dados.dataFiliacao > hojeISO) {
+    return "A data de filiação não pode ser no futuro.";
+  }
+
+  if (dados.filiacaoMae.length < 3 || dados.filiacaoPai.length < 3) {
+    return "Informe a filiação com pelo menos 3 caracteres.";
+  }
+
+  if (dados.naturalidade.length < 2) {
+    return "Informe uma naturalidade válida.";
+  }
+
+  if (quantidadeDigitos(dados.rg) < 3) {
+    return "Informe um RG válido.";
+  }
+
+  if (quantidadeDigitos(dados.cpf) !== 11) {
+    return "Informe um CPF válido.";
+  }
+
+  if (![10, 11].includes(quantidadeDigitos(dados.telefone))) {
+    return "Informe um telefone válido.";
+  }
+
+  if (dados.profissao.length < 2) {
+    return "Informe uma profissão válida.";
+  }
+
+  if (dados.endereco.length < 5) {
+    return "Informe um endereço válido.";
+  }
+
+  return "";
+}
+
+function mensagemErroSalvarSocio(error) {
+  const mensagem = (error?.message || "").toLowerCase();
+
+  if (mensagem.includes("socios_cpf_key") || mensagem.includes("duplicate")) {
+    return "Já existe um sócio cadastrado com esse CPF.";
+  }
+
+  if (mensagem.includes("row-level security")) {
+    return "Não foi possível salvar. Verifique as permissões no Supabase.";
+  }
+
+  return "Não foi possível atualizar as informações do sócio.";
+}
+
+async function salvarEdicaoSocio(event) {
+  event.preventDefault();
+
+  if (!validarSocioId()) {
+    mostrarMensagemEdicao("Sócio inválido. Volte para a lista e abra novamente.", "erro");
+    return;
+  }
+
+  const dados = obterDadosFormularioSocio();
+  const erroValidacao = validarFormularioSocio(dados);
+
+  if (erroValidacao) {
+    mostrarMensagemEdicao(erroValidacao, "erro");
+    return;
+  }
+
+  const submitButton = formEditarSocio.querySelector(".btn-salvar");
+  submitButton.disabled = true;
+  limparMensagemEdicao();
+
+  const payload = {
+    nome: dados.nome,
+    data_nascimento: dados.dataNascimento,
+    data_filiacao: dados.dataFiliacao || null,
+    filiacao_mae: dados.filiacaoMae,
+    filiacao_pai: dados.filiacaoPai,
+    naturalidade: dados.naturalidade,
+    rg: dados.rg,
+    cpf: dados.cpf,
+    telefone: dados.telefone,
+    profissao: dados.profissao,
+    endereco: dados.endereco,
+    ativo: dados.ativo,
+  };
+
+  try {
+    const { data, error } = await supabase
+      .from("socios")
+      .update(payload)
+      .eq("id", socioId)
+      .select("*")
+      .maybeSingle();
+
+    if (error) throw error;
+
+    socioAtual = data || { ...socioAtual, ...payload };
+    localStorage.setItem("socioSelecionado", JSON.stringify(socioAtual));
+    renderSocio();
+    fecharModalEditarSocio();
+    mostrarMensagem("Informações do sócio atualizadas.", "sucesso");
+  } catch (error) {
+    console.error("Erro ao atualizar sócio:", error.message);
+    mostrarMensagemEdicao(mensagemErroSalvarSocio(error), "erro");
+  } finally {
+    submitButton.disabled = false;
+  }
 }
 
 function tentarRenderizarSocioDoCache() {
@@ -373,7 +650,7 @@ async function salvarSituacao(status) {
   mostrarMensagem("Situação do pagamento atualizada.", "sucesso");
 }
 
-async function excluirSocio() {
+function abrirModalExcluirSocio() {
   if (!validarSocioId()) {
     mostrarMensagem(
       "Sócio inválido. Volte para a lista e abra os detalhes novamente.",
@@ -382,15 +659,31 @@ async function excluirSocio() {
     return;
   }
 
-  const confirmar = window.confirm(
-    "Tem certeza que deseja excluir este sócio?",
-  );
-  if (!confirmar) return;
+  nomeSocioExclusao.textContent = socioAtual?.nome || "selecionado";
+  limparMensagemExclusao();
+  modalExcluirSocioOverlay.classList.add("active");
+}
+
+function fecharModalExcluirSocio() {
+  modalExcluirSocioOverlay.classList.remove("active");
+  limparMensagemExclusao();
+}
+
+async function excluirSocio() {
+  if (!validarSocioId()) {
+    mostrarMensagemExclusao("Sócio inválido. Volte para a lista e abra novamente.", "erro");
+    return;
+  }
+
+  btnConfirmarExcluirSocio.disabled = true;
+  limparMensagemExclusao();
 
   const { error } = await supabase.from("socios").delete().eq("id", socioId);
 
   if (error) {
-    mostrarMensagem("Não foi possível excluir o sócio.", "erro");
+    console.error("Erro ao excluir sócio:", error.message);
+    mostrarMensagemExclusao("Não foi possível excluir o sócio.", "erro");
+    btnConfirmarExcluirSocio.disabled = false;
     return;
   }
 
@@ -457,17 +750,76 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && document.body.classList.contains("menu-lateral-aberto")) {
     fecharMenuLateral();
   }
+
+  if (e.key === "Escape" && modalEditarSocioOverlay.classList.contains("active")) {
+    fecharModalEditarSocio();
+  }
+
+  if (e.key === "Escape" && modalExcluirSocioOverlay.classList.contains("active")) {
+    fecharModalExcluirSocio();
+  }
 });
 
 btnEditarCadastro.addEventListener("click", () => {
   menuEditarSocio.classList.remove("aberto");
-  mostrarMensagem(
-    "A edição completa do cadastro do sócio pode ser a próxima tela/modal.",
-    "erro",
-  );
+  btnEditarSocio.setAttribute("aria-expanded", "false");
+  abrirModalEditarSocio();
 });
 
-btnExcluirSocio.addEventListener("click", excluirSocio);
+btnExcluirSocio.addEventListener("click", () => {
+  menuEditarSocio.classList.remove("aberto");
+  btnEditarSocio.setAttribute("aria-expanded", "false");
+  abrirModalExcluirSocio();
+});
+btnFecharEditarSocio.addEventListener("click", fecharModalEditarSocio);
+btnCancelarEditarSocio.addEventListener("click", fecharModalEditarSocio);
+formEditarSocio.addEventListener("submit", salvarEdicaoSocio);
+btnFecharExcluirSocio.addEventListener("click", fecharModalExcluirSocio);
+btnCancelarExcluirSocio.addEventListener("click", fecharModalExcluirSocio);
+btnConfirmarExcluirSocio.addEventListener("click", excluirSocio);
+
+modalEditarSocioOverlay.addEventListener("click", (e) => {
+  if (e.target === modalEditarSocioOverlay) fecharModalEditarSocio();
+});
+
+modalExcluirSocioOverlay.addEventListener("click", (e) => {
+  if (e.target === modalExcluirSocioOverlay) fecharModalExcluirSocio();
+});
+
+editarDataNascimento.max = dataHojeISO();
+editarDataFiliacao.max = dataHojeISO();
+
+editarNome.addEventListener("input", () => {
+  editarNome.value = somenteLetrasEspacos(editarNome.value, 100);
+});
+
+editarFiliacaoMae.addEventListener("input", () => {
+  editarFiliacaoMae.value = somenteLetrasEspacos(editarFiliacaoMae.value, 100);
+});
+
+editarFiliacaoPai.addEventListener("input", () => {
+  editarFiliacaoPai.value = somenteLetrasEspacos(editarFiliacaoPai.value, 100);
+});
+
+editarNaturalidade.addEventListener("input", () => {
+  editarNaturalidade.value = textoNaturalidade(editarNaturalidade.value);
+});
+
+editarProfissao.addEventListener("input", () => {
+  editarProfissao.value = somenteLetrasEspacos(editarProfissao.value, 80);
+});
+
+editarRg.addEventListener("input", () => {
+  editarRg.value = formatarRg(editarRg.value);
+});
+
+editarCpf.addEventListener("input", () => {
+  editarCpf.value = formatarCpf(editarCpf.value);
+});
+
+editarTelefone.addEventListener("input", () => {
+  editarTelefone.value = formatarTelefone(editarTelefone.value);
+});
 
 async function iniciarTela() {
   const exibiuCache = tentarRenderizarSocioDoCache();
@@ -528,7 +880,8 @@ async function iniciarTela() {
 
 registrarSessaoCallback((resultadoSessao) => {
   const pathname = window.location.pathname;
-  if (window.location.pathname !== "/socio-detalhes") return;
+  const caminhosDetalhes = ["/socio-detalhes", "/socio-detalhes.html"];
+  if (!caminhosDetalhes.includes(pathname)) return;
 
   if (!resultadoSessao) {
     // Protected path, user will be redirected
