@@ -324,6 +324,33 @@
     </div>
   </div>
 
+  <!-- Excluir Sócio Modal -->
+  <div class="modal-overlay" id="modalExcluirSocioOverlay">
+    <div class="modal-box modal-confirmacao-exclusao">
+      <div class="modal-header">
+        <h2>Excluir sócio</h2>
+        <button class="modal-close" id="btnFecharExcluirSocio" aria-label="Fechar">&times;</button>
+      </div>
+
+      <p class="confirmacao-texto">
+        Deseja excluir o sócio <strong id="nomeSocioExclusao">selecionado</strong>?
+      </p>
+      <p class="confirmacao-alerta">Essa ação não poderá ser desfeita.</p>
+
+      <p class="form-message" id="excluirSocioMessage"></p>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancelar" id="btnCancelarExcluirSocio">Cancelar</button>
+        <button type="button" class="btn-salvar btn-excluir-confirmar" id="btnConfirmarExcluirSocio">
+          <span>Excluir sócio</span>
+          <div class="loading-spinner"
+            style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.35); display: none; margin: 0 auto;">
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Perfil Modal -->
   <div class="modal-overlay" id="modalPerfilOverlay">
     <div class="modal-box modal-perfil">

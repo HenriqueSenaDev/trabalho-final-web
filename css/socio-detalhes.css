@@ -496,6 +496,33 @@
   border-color: var(--verde-principal);
 }
 
+.modal-confirmacao-exclusao {
+  max-width: 520px;
+}
+
+.confirmacao-texto {
+  color: #4d4c4c;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.confirmacao-alerta {
+  color: var(--vermelho-texto);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.btn-excluir-confirmar {
+  background-color: #da0000;
+}
+
+.btn-excluir-confirmar:hover {
+  background-color: #b80000;
+}
+
 @media (min-width: 400px) {
   .acoes-socio {
     flex-direction: row;

@@ -67,6 +67,12 @@ const editarTelefone = document.getElementById("editarTelefone");
 const editarProfissao = document.getElementById("editarProfissao");
 const editarAtivo = document.getElementById("editarAtivo");
 const editarEndereco = document.getElementById("editarEndereco");
+const modalExcluirSocioOverlay = document.getElementById("modalExcluirSocioOverlay");
+const btnFecharExcluirSocio = document.getElementById("btnFecharExcluirSocio");
+const btnCancelarExcluirSocio = document.getElementById("btnCancelarExcluirSocio");
+const btnConfirmarExcluirSocio = document.getElementById("btnConfirmarExcluirSocio");
+const nomeSocioExclusao = document.getElementById("nomeSocioExclusao");
+const excluirSocioMessage = document.getElementById("excluirSocioMessage");
 const loadingOverlay = document.getElementById("loadingOverlay");
 const menuIcon = document.querySelector(".menu-icon");
 const sidebar = document.getElementById("sidebar");
@@ -160,6 +166,16 @@ function mostrarMensagemEdicao(texto, tipo) {
 function limparMensagemEdicao() {
   editarSocioMessage.textContent = "";
   editarSocioMessage.className = "form-message";
+}
+
+function mostrarMensagemExclusao(texto, tipo) {
+  excluirSocioMessage.textContent = texto;
+  excluirSocioMessage.className = `form-message ${tipo}`;
+}
+
+function limparMensagemExclusao() {
+  excluirSocioMessage.textContent = "";
+  excluirSocioMessage.className = "form-message";
 }
 
 function dataHojeISO() {
@@ -634,7 +650,7 @@ async function salvarSituacao(status) {
   mostrarMensagem("Situação do pagamento atualizada.", "sucesso");
 }
 
-async function excluirSocio() {
+function abrirModalExcluirSocio() {
   if (!validarSocioId()) {
     mostrarMensagem(
       "Sócio inválido. Volte para a lista e abra os detalhes novamente.",
@@ -643,15 +659,31 @@ async function excluirSocio() {
     return;
   }
 
-  const confirmar = window.confirm(
-    "Tem certeza que deseja excluir este sócio?",
-  );
-  if (!confirmar) return;
+  nomeSocioExclusao.textContent = socioAtual?.nome || "selecionado";
+  limparMensagemExclusao();
+  modalExcluirSocioOverlay.classList.add("active");
+}
+
+function fecharModalExcluirSocio() {
+  modalExcluirSocioOverlay.classList.remove("active");
+  limparMensagemExclusao();
+}
+
+async function excluirSocio() {
+  if (!validarSocioId()) {
+    mostrarMensagemExclusao("Sócio inválido. Volte para a lista e abra novamente.", "erro");
+    return;
+  }
+
+  btnConfirmarExcluirSocio.disabled = true;
+  limparMensagemExclusao();
 
   const { error } = await supabase.from("socios").delete().eq("id", socioId);
 
   if (error) {
-    mostrarMensagem("Não foi possível excluir o sócio.", "erro");
+    console.error("Erro ao excluir sócio:", error.message);
+    mostrarMensagemExclusao("Não foi possível excluir o sócio.", "erro");
+    btnConfirmarExcluirSocio.disabled = false;
     return;
   }
 
@@ -722,6 +754,10 @@ document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && modalEditarSocioOverlay.classList.contains("active")) {
     fecharModalEditarSocio();
   }
+
+  if (e.key === "Escape" && modalExcluirSocioOverlay.classList.contains("active")) {
+    fecharModalExcluirSocio();
+  }
 });
 
 btnEditarCadastro.addEventListener("click", () => {
@@ -730,13 +766,24 @@ btnEditarCadastro.addEventListener("click", () => {
   abrirModalEditarSocio();
 });
 
-btnExcluirSocio.addEventListener("click", excluirSocio);
+btnExcluirSocio.addEventListener("click", () => {
+  menuEditarSocio.classList.remove("aberto");
+  btnEditarSocio.setAttribute("aria-expanded", "false");
+  abrirModalExcluirSocio();
+});
 btnFecharEditarSocio.addEventListener("click", fecharModalEditarSocio);
 btnCancelarEditarSocio.addEventListener("click", fecharModalEditarSocio);
 formEditarSocio.addEventListener("submit", salvarEdicaoSocio);
+btnFecharExcluirSocio.addEventListener("click", fecharModalExcluirSocio);
+btnCancelarExcluirSocio.addEventListener("click", fecharModalExcluirSocio);
+btnConfirmarExcluirSocio.addEventListener("click", excluirSocio);
 
 modalEditarSocioOverlay.addEventListener("click", (e) => {
   if (e.target === modalEditarSocioOverlay) fecharModalEditarSocio();
+});
+
+modalExcluirSocioOverlay.addEventListener("click", (e) => {
+  if (e.target === modalExcluirSocioOverlay) fecharModalExcluirSocio();
 });
 
 editarDataNascimento.max = dataHojeISO();
