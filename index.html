@@ -4,15 +4,280 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Evento Festa Junina</title>
+  <title>AMAB - Controle de Sócios</title>
 
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=check">
+  <link rel="stylesheet" href="css/navbar.css">
+  <link rel="stylesheet" href="css/socios.css">
+  <link rel="stylesheet" href="css/shared.css">
 </head>
 
 <body>
-  <h1>Hello World!</h1>
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Carregando">
+    <div class="loading-spinner" aria-hidden="true"></div>
+  </div>
 
-  <script src="main.js"></script>
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-icon" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="header-titles">
+        <h1>AMAB</h1>
+        <h1> - Associação dos moradores e amigos do Baú</h1>
+        <p>Controle de Sócios</p>
+      </div>
+    </div>
+    <button class="header-right" id="btnEditarPerfil" type="button" aria-label="Editar perfil do administrador">
+      <div class="user-icon">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.6 0-10.5 1.8-10.5 5.4v1.9h21v-1.9c0-3.6-6.9-5.4-10.5-5.4z" />
+        </svg>
+      </div>
+      <span id="nomeAdministradorHeader">Administrador</span>
+    </button>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <div class="sidebar-content">
+      <div class="sidebar-profile">
+        <div class="sidebar-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.6 0-10.5 1.8-10.5 5.4v1.9h21v-1.9c0-3.6-6.9-5.4-10.5-5.4z" />
+          </svg>
+        </div>
+        <strong id="nomeAdministradorMenu">Administrador</strong>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Navegação principal">
+        <a class="sidebar-link active" href="index.html" aria-current="page">
+          <span class="sidebar-link-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zm-8 0c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.7 0-1.1.1 1.2.9 2.1 2.1 2.1 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z" />
+            </svg>
+          </span>
+          <span>Sócios</span>
+          <span class="sidebar-chevron" aria-hidden="true">›</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-action logout" id="btnSairMenu" type="button">
+        <span class="sidebar-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M10 17v-2H4V9h6V7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6zm2-12v2h8v10h-8v2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-8zM10.7 12l2.9 2.9-1.4 1.4L6.9 12l5.3-4.3 1.4 1.4-2.9 2.9z" />
+          </svg>
+        </span>
+        <span>Sair</span>
+        <div class="loading-spinner"
+          style="border-top-color: red !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+        </div>
+      </button>
+    </div>
+  </aside>
+
+  <main class="container">
+    <h2 class="page-title">Sócios</h2>
+
+    <div class="toolbar">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24">
+          <path
+            d="M21 20.3l-5.4-5.4a7.6 7.6 0 1 0-1.3 1.3l5.4 5.4a.9.9 0 0 0 1.3-1.3zM4.5 10.1a5.6 5.6 0 1 1 11.2 0 5.6 5.6 0 0 1-11.2 0z" />
+        </svg>
+        <input type="text" id="inputPesquisa" placeholder="Pesquisar sócio...">
+      </div>
+      <button class="btn-novo-socio" id="btnNovoSocio">+ Novo Sócio</button>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Situação (Mês atual)</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaSocios">
+        </tbody>
+      </table>
+    </div>
+
+    <p class="total-socios" id="totalSocios">Total de Sócios: 0</p>
+
+    <div class="pagination" id="paginationControls">
+      <button id="btnPrevPage" class="btn-page" disabled>&laquo; Anterior</button>
+      <span id="pageInfo">Página 1 de 1</span>
+      <button id="btnNextPage" class="btn-page">Próxima &raquo;</button>
+    </div>
+  </main>
+
+  <!-- Novo Socio Modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2>Novo Sócio</h2>
+        <button class="modal-close" id="btnFecharModal" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formNovoSocio">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="nome">Nome<span class="req">*</span></label>
+            <input type="text" id="nome" placeholder="Digite o nome completo" required>
+          </div>
+
+          <div class="form-field">
+            <label for="dataNascimento">Data de nascimento<span class="req">*</span></label>
+            <div class="date-field">
+              <input type="text" id="dataNascimento" placeholder="dd/mm/aaaa" required onfocus="this.type='date'"
+                onblur="if(!this.value)this.type='text'">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 16H5V9h14zM7 11h5v5H7z" />
+              </svg>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="filiacaoMae">Filiação - Mãe<span class="req">*</span></label>
+            <input type="text" id="filiacaoMae" placeholder="Digite o nome completo da mãe" required>
+          </div>
+
+          <div class="form-field">
+            <label for="filiacaoPai">Filiação - Pai<span class="req">*</span></label>
+            <input type="text" id="filiacaoPai" placeholder="Digite o nome completo do pai" required>
+          </div>
+
+          <div class="form-field">
+            <label for="naturalidade">Naturalidade<span class="req">*</span></label>
+            <input type="text" id="naturalidade" placeholder="Cidade/Estado" required>
+          </div>
+
+          <div class="form-field">
+            <label for="rg">RG<span class="req">*</span></label>
+            <input type="text" id="rg" placeholder="Digite o RG" maxlength="11" required>
+          </div>
+
+          <div class="form-field">
+            <label for="cpf">CPF<span class="req">*</span></label>
+            <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14" required>
+          </div>
+
+          <div class="form-field">
+            <label for="telefone">Telefone<span class="req">*</span></label>
+            <input type="text" id="telefone" placeholder="(00) 00000-0000" maxlength="15" required>
+          </div>
+
+          <div class="form-field">
+            <label for="profissao">Profissão<span class="req">*</span></label>
+            <input type="text" id="profissao" placeholder="Digite a profissão" required>
+          </div>
+
+          <div class="form-field full-row">
+            <label for="endereco">Endereço<span class="req">*</span></label>
+            <input type="text" id="endereco" placeholder="Digite o endereço completo" required>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar</span>
+            <div class="loading-spinner"
+              style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Perfil Modal -->
+  <div class="modal-overlay" id="modalPerfilOverlay">
+    <div class="modal-box modal-perfil">
+      <div class="modal-header">
+        <h2>Editar meu perfil</h2>
+        <button class="modal-close" id="btnFecharPerfil" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formPerfil">
+        <div class="form-field full-row">
+          <label for="perfilNome">Nome completo</label>
+          <input type="text" id="perfilNome" placeholder="Administrador" minlength="3" maxlength="50"
+            autocomplete="name" required>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilEmail">E-mail</label>
+          <input type="email" id="perfilEmail" placeholder="admin@sitio.com" maxlength="100" autocomplete="email"
+            readonly aria-readonly="true">
+          <small class="field-hint">O e-mail de acesso não pode ser alterado por aqui.</small>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilNovaSenha">Nova senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilNovaSenha" placeholder="Digite a nova senha" minlength="8" maxlength="72"
+              autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilNovaSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilConfirmarSenha">Confirmar senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilConfirmarSenha" placeholder="Confirme sua senha" minlength="8"
+              maxlength="72" autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilConfirmarSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="form-message" id="perfilMessage"></p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelarPerfil">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar alterações</span>
+            <div class="loading-spinner"
+              style="border-top-color: white !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script type="module" src="js/socios.js"></script>
+  <script type="module" src="js/perfilAdmin.js"></script>
+  <script type="module" src="js/session.js"></script>
 </body>
 
 </html>

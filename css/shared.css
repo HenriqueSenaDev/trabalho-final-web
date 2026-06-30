@@ -1,0 +1,147 @@
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--branco);
+}
+
+.loading-overlay.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  width: 56px;
+  height: 56px;
+  border: 5px solid rgba(47, 107, 57, 0.2);
+  border-top-color: var(--verde-principal);
+  border-radius: 50%;
+  animation: loadingSpin 0.8s linear infinite;
+}
+
+button:disabled {
+  cursor: unset;
+}
+
+button:disabled svg,
+button:disabled span {
+  display: none;
+}
+
+button:disabled .loading-spinner {
+  display: block !important;
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-spinner {
+    animation: none;
+  }
+}
+
+/* ---------- Toast ---------- */
+
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #fff;
+  border-left: 5px solid var(--verde-principal);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  padding: 16px 20px;
+  min-width: 280px;
+  max-width: 380px;
+  font-family: "Poppins", "Segoe UI", Arial, Helvetica, sans-serif;
+  animation: toastEntrar 0.3s ease forwards;
+}
+
+.toast.sair {
+  animation: toastSair 0.3s ease forwards;
+}
+
+.toast-icone {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  background-color: var(--verde-principal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-icone svg {
+  width: 16px;
+  height: 16px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.toast-texto {
+  flex: 1;
+}
+
+.toast-titulo {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--verde-principal);
+  margin: 0 0 2px;
+}
+
+.toast-descricao {
+  font-size: 13px;
+  color: var(--cinza-texto);
+  margin: 0;
+}
+
+@keyframes toastEntrar {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toastSair {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast,
+  .toast.sair {
+    animation: none;
+  }
+}

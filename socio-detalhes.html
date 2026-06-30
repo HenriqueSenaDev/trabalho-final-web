@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMAB - Detalhes do Sócio</title>
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_left_alt,calendar_month,check,delete,edit_square" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/socios.css" />
+  <link rel="stylesheet" href="css/socio-detalhes.css" />
+  <link rel="stylesheet" href="css/shared.css">
+</head>
+
+<body>
+  <!-- Loading Overlary -->
+  <div class="loading-overlay" id="loadingOverlay" role="status" aria-label="Carregando">
+    <div class="loading-spinner" aria-hidden="true"></div>
+  </div>
+
+  <header class="header">
+    <div class="header-left">
+      <button class="menu-icon" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="header-titles">
+        <h1>AMAB</h1>
+        <h1> - Associação dos moradores e amigos do Baú</h1>
+        <p>Controle de Sócios</p>
+      </div>
+    </div>
+    <button class="header-right" id="btnEditarPerfil" type="button" aria-label="Editar perfil do administrador">
+      <div class="user-icon">
+        <svg viewBox="0 0 24 24">
+          <path
+            d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.6 0-10.5 1.8-10.5 5.4v1.9h21v-1.9c0-3.6-6.9-5.4-10.5-5.4z" />
+        </svg>
+      </div>
+      <span id="nomeAdministradorHeader">Administrador</span>
+    </button>
+  </header>
+
+  <!-- Sidebar -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Menu lateral">
+    <div class="sidebar-content">
+      <div class="sidebar-profile">
+        <div class="sidebar-avatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.6 0-10.5 1.8-10.5 5.4v1.9h21v-1.9c0-3.6-6.9-5.4-10.5-5.4z">
+            </path>
+          </svg>
+        </div>
+        <strong id="nomeAdministradorMenu">Administrador</strong>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Navegação principal">
+        <a class="sidebar-link" href="index.html">
+          <span class="sidebar-link-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zm-8 0c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.7 0-1.1.1 1.2.9 2.1 2.1 2.1 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z">
+              </path>
+            </svg>
+          </span>
+          <span>Sócios</span>
+          <span class="sidebar-chevron" aria-hidden="true">›</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-action logout" id="btnSairMenu" type="button">
+        <span class="sidebar-link-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M10 17v-2H4V9h6V7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6zm2-12v2h8v10h-8v2h8a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-8zM10.7 12l2.9 2.9-1.4 1.4L6.9 12l5.3-4.3 1.4 1.4-2.9 2.9z">
+            </path>
+          </svg>
+        </span>
+        <span>Sair</span>
+        <div class="loading-spinner"
+          style="border-top-color: red !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+        </div>
+      </button>
+    </div>
+  </aside>
+
+  <main class="detalhes-container">
+    <a class="link-voltar" href="index.html">
+      <span class="material-symbols-outlined voltar-icone" aria-hidden="true">arrow_left_alt</span>
+      Voltar para a lista
+    </a>
+
+    <section class="detalhes-grid">
+      <div class="socio-coluna">
+        <div class="socio-resumo">
+          <div class="avatar-socio" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M12 12c2.8 0 5-2.2 5-5s-2.2-5-5-5-5 2.2-5 5 2.2 5 5 5zm0 2.4c-3.6 0-8 1.8-8 4v1.8h16v-1.8c0-2.2-4.4-4-8-4z">
+              </path>
+            </svg>
+          </div>
+
+          <div class="socio-cabecalho">
+            <h2 id="detalheNome">Carregando...</h2>
+
+            <p class="meta-socio">
+              <span class="meta-icone" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M20.5 15.5c-1.5 0-2.9-.2-4.2-.7-.5-.2-1-.1-1.4.3l-1.8 1.8c-2.3-1.2-4.2-3.1-5.4-5.4l1.8-1.8c.4-.4.5-.9.3-1.4-.5-1.3-.7-2.7-.7-4.2 0-.7-.5-1.2-1.2-1.2H4.2C3.5 2.9 3 3.4 3 4.1 3 13.4 10.6 21 19.9 21c.7 0 1.2-.5 1.2-1.2v-3.1c0-.7-.5-1.2-.6-1.2z">
+                  </path>
+                </svg>
+              </span>
+              <span id="detalheTelefone">(00) 00000-0000</span>
+            </p>
+
+            <p class="meta-socio">
+              <span class="meta-icone" aria-hidden="true">
+                <span class="material-symbols-outlined">calendar_month</span>
+              </span>
+              <span id="detalheDataFiliacao">Sócio desde: --/--/----</span>
+            </p>
+
+            <div class="acoes-socio">
+              <span class="badge-ativo" id="detalheSituacao">
+                <span class="material-symbols-outlined badge-icone" aria-hidden="true">check</span>
+                Sócio Ativo
+              </span>
+
+              <div class="dropdown-acoes">
+                <button class="btn-editar-socio" type="button" id="btnEditarSocio" aria-expanded="false">
+                  Editar informações
+                  <span class="dropdown-seta" aria-hidden="true"></span>
+                </button>
+
+                <div class="menu-editar" id="menuEditarSocio">
+                  <button type="button" id="btnEditarCadastro">
+                    <span class="material-symbols-outlined menu-icone" aria-hidden="true">edit_square</span>
+                    Editar informações do sócio
+                  </button>
+                  <button type="button" id="btnExcluirSocio">
+                    <span class="material-symbols-outlined menu-icone" aria-hidden="true">delete</span>
+                    Excluir Sócio
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <article class="card-info">
+          <h3>Informações pessoais</h3>
+
+          <dl class="info-lista">
+            <div>
+              <dt>Data de nascimento</dt>
+              <dd id="infoNascimento">--/--/----</dd>
+            </div>
+            <div>
+              <dt>Filiação - Mãe</dt>
+              <dd id="infoMae">-</dd>
+            </div>
+            <div>
+              <dt>Filiação - Pai</dt>
+              <dd id="infoPai">-</dd>
+            </div>
+            <div>
+              <dt>Naturalidade</dt>
+              <dd id="infoNaturalidade">-</dd>
+            </div>
+            <div>
+              <dt>RG</dt>
+              <dd id="infoRg">-</dd>
+            </div>
+            <div>
+              <dt>CPF</dt>
+              <dd id="infoCpf">-</dd>
+            </div>
+            <div>
+              <dt>Profissão</dt>
+              <dd id="infoProfissao">-</dd>
+            </div>
+            <div>
+              <dt>Endereço</dt>
+              <dd id="infoEndereco">-</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+
+      <section class="pagamentos-coluna">
+        <div class="pagamentos-topo">
+          <h2>Controle de pagamentos</h2>
+        </div>
+
+        <label class="ano-controle" for="selectAno">
+          <span>Ano</span>
+          <select id="selectAno"></select>
+        </label>
+
+        <div class="meses-grid" id="mesesGrid"></div>
+
+        <div class="alterar-pagamento">
+          <label class="mes-controle" for="selectMes">
+            Alterar situação do mês selecionado
+            <select id="selectMes"></select>
+          </label>
+
+          <fieldset class="situacao-controle">
+            <legend>Situação</legend>
+            <label>
+              <input type="radio" name="situacaoPagamento" value="Pago" />
+              <span class="radio-pago"></span>
+              Pago
+            </label>
+            <label>
+              <input type="radio" name="situacaoPagamento" value="Pendente" />
+              <span class="radio-pendente"></span>
+              Pendente
+            </label>
+          </fieldset>
+        </div>
+
+        <p class="form-message" id="detalhesMessage"></p>
+      </section>
+    </section>
+  </main>
+
+  <!-- Editar Sócio Modal -->
+  <div class="modal-overlay" id="modalEditarSocioOverlay">
+    <div class="modal-box modal-socio-edicao">
+      <div class="modal-header">
+        <h2>Editar informações do sócio</h2>
+        <button class="modal-close" id="btnFecharEditarSocio" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formEditarSocio">
+        <div class="form-grid">
+          <div class="form-field full-row">
+            <label for="editarNome">Nome completo<span class="req">*</span></label>
+            <input type="text" id="editarNome" placeholder="Digite o nome completo" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarDataNascimento">Data de nascimento<span class="req">*</span></label>
+            <input type="date" id="editarDataNascimento" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarDataFiliacao">Data de filiação</label>
+            <input type="date" id="editarDataFiliacao">
+          </div>
+
+          <div class="form-field">
+            <label for="editarFiliacaoMae">Filiação - Mãe<span class="req">*</span></label>
+            <input type="text" id="editarFiliacaoMae" placeholder="Nome completo da mãe" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarFiliacaoPai">Filiação - Pai<span class="req">*</span></label>
+            <input type="text" id="editarFiliacaoPai" placeholder="Nome completo do pai" maxlength="100" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarNaturalidade">Naturalidade<span class="req">*</span></label>
+            <input type="text" id="editarNaturalidade" placeholder="Cidade - UF" maxlength="80" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarRg">RG<span class="req">*</span></label>
+            <input type="text" id="editarRg" placeholder="Digite o RG" maxlength="11" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarCpf">CPF<span class="req">*</span></label>
+            <input type="text" id="editarCpf" placeholder="000.000.000-00" maxlength="14" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarTelefone">Telefone<span class="req">*</span></label>
+            <input type="text" id="editarTelefone" placeholder="(00) 00000-0000" maxlength="15" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarProfissao">Profissão<span class="req">*</span></label>
+            <input type="text" id="editarProfissao" placeholder="Digite a profissão" maxlength="80" required>
+          </div>
+
+          <div class="form-field">
+            <label for="editarAtivo">Situação do cadastro</label>
+            <select id="editarAtivo">
+              <option value="true">Sócio Ativo</option>
+              <option value="false">Sócio Inativo</option>
+            </select>
+          </div>
+
+          <div class="form-field full-row">
+            <label for="editarEndereco">Endereço<span class="req">*</span></label>
+            <input type="text" id="editarEndereco" placeholder="Digite o endereço completo" maxlength="180" required>
+          </div>
+        </div>
+
+        <p class="form-message" id="editarSocioMessage"></p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelarEditarSocio">Cancelar</button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar alterações</span>
+            <div class="loading-spinner"
+              style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Excluir Sócio Modal -->
+  <div class="modal-overlay" id="modalExcluirSocioOverlay">
+    <div class="modal-box modal-confirmacao-exclusao">
+      <div class="modal-header">
+        <h2>Excluir sócio</h2>
+        <button class="modal-close" id="btnFecharExcluirSocio" aria-label="Fechar">&times;</button>
+      </div>
+
+      <p class="confirmacao-texto">
+        Deseja excluir o sócio <strong id="nomeSocioExclusao">selecionado</strong>?
+      </p>
+      <p class="confirmacao-alerta">Essa ação não poderá ser desfeita.</p>
+
+      <p class="form-message" id="excluirSocioMessage"></p>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-cancelar" id="btnCancelarExcluirSocio">Cancelar</button>
+        <button type="button" class="btn-salvar btn-excluir-confirmar" id="btnConfirmarExcluirSocio">
+          <span>Excluir sócio</span>
+          <div class="loading-spinner"
+            style="border-top-color: white !important; width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.35); display: none; margin: 0 auto;">
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Perfil Modal -->
+  <div class="modal-overlay" id="modalPerfilOverlay">
+    <div class="modal-box modal-perfil">
+      <div class="modal-header">
+        <h2>Editar meu perfil</h2>
+        <button class="modal-close" id="btnFecharPerfil" aria-label="Fechar">&times;</button>
+      </div>
+
+      <form id="formPerfil">
+        <div class="form-field full-row">
+          <label for="perfilNome">Nome completo</label>
+          <input type="text" id="perfilNome" placeholder="Administrador" minlength="3" maxlength="50"
+            autocomplete="name" required>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilEmail">E-mail</label>
+          <input type="email" id="perfilEmail" placeholder="admin@sitio.com" maxlength="100" autocomplete="email"
+            readonly aria-readonly="true">
+          <small class="field-hint">O e-mail de acesso não pode ser alterado por aqui.</small>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilNovaSenha">Nova senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilNovaSenha" placeholder="Digite a nova senha" minlength="8" maxlength="72"
+              autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilNovaSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="form-field full-row">
+          <label for="perfilConfirmarSenha">Confirmar senha</label>
+          <div class="password-field">
+            <input type="password" id="perfilConfirmarSenha" placeholder="Confirme sua senha" minlength="8"
+              maxlength="72" autocomplete="new-password">
+            <button type="button" class="toggle-password" data-target="perfilConfirmarSenha" aria-label="Mostrar senha">
+              <svg viewBox="0 0 24 24">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="form-message" id="perfilMessage"></p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btnCancelarPerfil">Cancelar</button>
+          <button type="submit" class="btn-salvar">
+            <span>Salvar alterações</span>
+            <div class="loading-spinner"
+              style="border-top-color: white !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none; margin: 0 auto;">
+            </div>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/socioDetalhes.js"></script>
+  <script type="module" src="js/perfilAdmin.js"></script>
+</body>
+
+</html>

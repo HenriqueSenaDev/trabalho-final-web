@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMAB - Acesse sua conta</title>
+
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="css/shared.css" />
+</head>
+
+<body class="auth-body">
+  <div class="auth-card layout-login">
+    <div class="auth-brand">
+      <img class="auth-logo" src="assets/images/logo.png" alt="AMAB - Associação dos Moradores e Amigos do Baú" />
+    </div>
+
+    <div class="auth-form-panel">
+      <h1>Acesse sua conta</h1>
+
+      <form id="formLogin">
+        <div class="auth-field">
+          <label for="usuario">E-mail</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="8" r="4"></circle>
+              <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path>
+            </svg>
+            <input type="email" id="usuario" placeholder="Digite seu e-mail" autocomplete="username" required />
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label for="senha">Senha</label>
+          <div class="auth-input">
+            <svg viewBox="0 0 24 24">
+              <rect x="5" y="11" width="14" height="9" rx="2"></rect>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+            </svg>
+            <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password" required />
+            <button type="button" class="toggle-senha" aria-label="Mostrar senha" data-target="senha">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke-width="1.8">
+                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <p class="auth-message" id="loginMessage"></p>
+
+        <button type="submit" class="btn-principal">
+          <svg viewBox="0 0 24 24">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <path d="M16 17l5-5-5-5"></path>
+            <path d="M21 12H9"></path>
+          </svg>
+          <span>Entrar</span>
+          <div class="loading-spinner"
+            style="border-top-color: white !important; width: 24px; height: 24px; border: 3px solid rgba(47, 107, 57, 0.2); display: none;">
+          </div>
+        </button>
+
+        <button type="button" class="btn-secundario" id="btnCriarConta">
+          Criar nova conta
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script type="module" src="js/auth.js"></script>
+</body>
+
+</html>
