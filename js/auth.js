@@ -15,6 +15,26 @@ function mostrarMensagem(elemento, texto, tipo) {
   elemento.classList.add(tipo);
 }
 
+function mostrarToast(titulo, descricao, duracao = 2000) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerHTML = `
+    <div class="toast-icone">
+      <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <div class="toast-texto">
+      <p class="toast-titulo">${titulo}</p>
+      <p class="toast-descricao">${descricao}</p>
+    </div>
+  `;
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.classList.add("sair");
+    toast.addEventListener("animationend", () => toast.remove(), { once: true });
+  }, duracao);
+}
+
 function mensagemErroCadastro(error) {
   const mensagem = error?.message || "";
 
@@ -74,7 +94,10 @@ if (formLogin) {
         return;
       }
 
-      window.location.href = "index.html";
+      mostrarToast("Login efetuado com sucesso!", "Redirecionando...");
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
     } catch (err) {
       console.error("Erro ao fazer login:", err.message);
       mostrarMensagem(mensagemEl, "Erro ao conectar com o servidor.", "erro");
@@ -140,10 +163,10 @@ if (formCadastro) {
         return;
       }
 
-      mostrarMensagem(mensagemEl, "Conta criada com sucesso! Faça login para continuar.", "sucesso");
+      mostrarToast("Conta criada com sucesso!", "Redirecionando para o login...");
       setTimeout(() => {
         window.location.href = "login.html";
-      }, 900);
+      }, 2000);
     } catch (err) {
       console.error("Erro ao criar conta:", err.message);
       mostrarMensagem(mensagemEl, "Erro ao conectar com o servidor.", "erro");
